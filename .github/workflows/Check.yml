@@ -1,0 +1,23 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check text files for SECRET
+        run: |
+          if grep -r --exclude-dir=.github --include="*.txt" "SECRET" .; then
+            echo "Found SECRET in a text file!"
+            exit 1
+          else
+            echo "No SECRET found."
+          fi
